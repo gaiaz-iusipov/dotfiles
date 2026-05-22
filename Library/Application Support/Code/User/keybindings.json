@@ -4,5 +4,10 @@
         "key": "ctrl+escape",
         "command": "workbench.action.terminal.toggleTerminal",
         "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+r",
+        "command": "editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
     }
 ]
