@@ -1,0 +1,82 @@
+[user]
+email = g.iusipov@gmail.com
+name = Gaiaz Iusipov
+
+[url "git@github.com:gaiaz-iusipov"]
+insteadOf = "https://github.com/gaiaz-iusipov"
+
+[core]
+excludesfile = ~/.gitignore
+editor = nano
+
+[init]
+templatedir = ~/.git-templates
+defaultBranch = main
+
+[diff]
+tool = meld
+
+[difftool]
+prompt = false
+
+[push]
+default = simple
+
+[help]
+autocorrect = 20
+
+[alias]
+# Shortcuts
+co = checkout
+sw = switch
+ci = commit -s
+st = status
+br = branch --show-current
+
+# Useful commands
+prev = checkout -
+amend = commit --amend --no-edit
+pushf = push --force
+please = push --force-with-lease
+unstage = reset HEAD --
+last = log -1 HEAD
+free = branch -D
+fall = fetch --all --prune
+poll = pull --all --prune
+
+# Push Origin
+puor = !git push -u origin $(git br)
+
+# Tree-like log graph
+hist = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
+
+# List branches sorted by last modified
+brls = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)%09%(upstream:track)' refs/heads | sed -e 's-refs/heads/--'"
+
+# Remove tracking branches no longer on remote
+brcl = "!for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {sub(\"refs/heads/\", \"\", $1); print $1}'); do git free $branch; done"
+
+# Unpushed branches
+unpushed = log --branches --not --remotes
+
+# Multialias
+repush = !git add . && git amend && git please
+clear = !git clean -df && git co -- .
+
+# External commands
+aliases = !git config -l | grep alias | cut -c 7-
+
+# Reset origin HEAD
+return = reset ORIG_HEAD
+refuse = reset --hard HEAD
+undo = reset --soft HEAD^
+back = reset HEAD^1 --hard
+
+# Soft reset all commits in the current branch up to the specified branch
+resto = "!git reset $(git merge-base \"$1\" $(git br)) #"
+
+[pull]
+rebase = false
+
+[includeIf "gitdir/i:~/work/**"]
+path = ~/work/.gitconfig

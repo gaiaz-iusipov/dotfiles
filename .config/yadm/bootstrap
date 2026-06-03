@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if ! fc-list | grep -q "JetBrains Mono"; then
+    echo "Installing JetBrains Mono..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
+fi
