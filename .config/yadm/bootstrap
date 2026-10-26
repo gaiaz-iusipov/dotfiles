@@ -1,6 +1,33 @@
-#!/bin/sh
+#!/usr/bin/env fish
 
-if ! fc-list | grep -q "JetBrains Mono"; then
+if not fc-list | grep -q "JetBrains Mono"
     echo "Installing JetBrains Mono..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
-fi
+    curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh | bash
+end
+
+sudo pacman -S --needed --noconfirm \
+    bat \
+    micro \
+    lazygit \
+    zenith \
+    go \
+    docker \
+    docker-compose \
+    podman \
+    tailscale \
+    croc; or exit 1
+
+command -q yay; or begin
+    sudo pacman -S --needed git base-devel; and \
+    git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin; and \
+    cd /tmp/yay-bin; and \
+    makepkg -si
+end
+
+yay -S --needed --noconfirm --overwrite "*" warp-terminal-bin; or exit 1
+
+yay -S --needed --noconfirm \
+    docker-model; or exit 1
+
+test (getent passwd "$USER" | cut -d: -f7) = (command -v fish); \
+    or chsh -s (command -v fish)
